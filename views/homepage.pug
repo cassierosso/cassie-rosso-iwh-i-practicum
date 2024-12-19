@@ -1,16 +1,28 @@
 doctype html
-html 
-    head 
-        title= `${title}`
-        meta(name="viewport" content="width=device-width, initial-scale=1")
-        link(rel="stylesheet", href="/css/style.css")
-    body    
-        h1 Custom Object Table 
-        a(href="/update-cobj") Add to this table
-        table
-            thead
-                tr 
-                    th Player Name 
-                    th Position 
-                    th Jersey Number 
-                tbody 
+html
+  head
+    title= `${title}`
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    link(rel="stylesheet", href="/css/style.css")
+  body
+    h1 Homepage
+
+    a(href="/update-cobj") Add to this table
+
+    if data && data.length > 0
+      table
+        thead
+          tr
+            th ID
+            th Name
+            th Jersey Number
+            th Position
+        tbody
+          each player in data
+            tr
+              td= player.id
+              td= player.properties.name
+              td= player.properties.jersey_number
+              td= player.properties.position
+    else
+      p No records found.
