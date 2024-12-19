@@ -7,3 +7,7 @@ html
     body    
         h1 Updates
         a(href="/") Return to the homepage
+        form(action="/update-cobj" method = "POST")
+            label(for="Name") Name
+            input(type = "text" id = "name" name = "name" required)
+            button(type="submit") Submit

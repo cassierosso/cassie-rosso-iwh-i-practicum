@@ -1,6 +1,8 @@
 const express = require("express");
 const axios = require("axios");
 const app = express();
+const dotenv = require("dotenv");
+dotenv.config();
 
 app.set("view engine", "pug");
 app.use(express.static(__dirname + "/public"));
@@ -8,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // * Please DO NOT INCLUDE the private app access token in your repo. Don't do this practicum in your normal account.
-const PRIVATE_APP_ACCESS = "";
+const PRIVATE_APP_ACCESS = process.env.PRIVATE_APP_ACCESS;
 
 // TODO: ROUTE 1 - Create a new app.get route for the homepage to call your custom object data. Pass this data along to the front-end and create a new pug template in the views folder.
 
@@ -51,23 +53,22 @@ app.get("/update-cobj", async (req, res) => {
 app.post("/update-cobj", async (req, res) => {
 	const newDude = {
 		properties: {
-			id: req.body.id,
 			jersey_number: req.body.jersey_number,
 			position: req.body.position,
 			name: req.body.name,
 		},
 	};
-	const newPlayer = `https://api.hubspot.com/crm/v3/objects/minnesota_wild_players/batch/create`;
+	const newPlayer = `https://api.hubspot.com/crm/v3/objects/2-38362414/batch/create`;
 	const headers = {
 		Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
 		"Content-Type": "application/json",
 	};
 
 	try {
-		await axios.post(newPlayer, newDude, { headers });
-		res.redirect("back");
+		await axios.post(newPlayer, { inputs: [newDude] }, { headers });
+		res.location(req.get("Referrer") || "/");
 	} catch (err) {
-		console.error(err);
+		console.error("Error creating custom object:", err);
 	}
 });
 
