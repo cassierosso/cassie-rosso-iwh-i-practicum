@@ -14,18 +14,23 @@ const PRIVATE_APP_ACCESS = "";
 
 // * Code for Route 1 goes here
 app.get("/", async (req, res) => {
-	const players = "https://api.hubapi.com/crm/v3/objects/2-38362414";
-	const headers = {
-		Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
-		"Content-Type": "application/json",
+	const url = `https://api.hubapi.com/crm/v3/objects/2-38362414?properties=id,name,jersey_number,position`;
+	const config = {
+		method: "GET",
+		headers: {
+			Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
+			"Content-Type": "application/json",
+		},
+		url: url,
 	};
+
 	try {
-		const resp = await axios.get(players, { headers });
-		const data = resp.data.results;
+		const response = await axios.request(config);
 		res.render("homepage", {
-			title: "Home | Integrating With HubSpot I Practicum",
-			data,
+			title: "Custom Object Table",
+			data: response.data.results,
 		});
+		console.log(response.data.results);
 	} catch (error) {
 		console.error(error);
 	}
@@ -46,6 +51,7 @@ app.get("/update-cobj", async (req, res) => {
 app.post("/update-cobj", async (req, res) => {
 	const newDude = {
 		properties: {
+			id: req.body.id,
 			jersey_number: req.body.jersey_number,
 			position: req.body.position,
 			name: req.body.name,
@@ -58,7 +64,7 @@ app.post("/update-cobj", async (req, res) => {
 	};
 
 	try {
-		await axios.patch(newPlayer, newDude, { headers });
+		await axios.post(newPlayer, newDude, { headers });
 		res.redirect("back");
 	} catch (err) {
 		console.error(err);
