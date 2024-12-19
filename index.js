@@ -13,7 +13,23 @@ const PRIVATE_APP_ACCESS = "";
 // TODO: ROUTE 1 - Create a new app.get route for the homepage to call your custom object data. Pass this data along to the front-end and create a new pug template in the views folder.
 
 // * Code for Route 1 goes here
-app.get("/", async (req, res) => {});
+app.get("/", async (req, res) => {
+	const players = "https://api.hubapi.com/crm/v3/objects/2-38362414";
+	const headers = {
+		Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
+		"Content-Type": "application/json",
+	};
+	try {
+		const resp = await axios.get(players, { headers });
+		const data = resp.data.results;
+		res.render("homepage", {
+			title: "Home | Integrating With HubSpot I Practicum",
+			data,
+		});
+	} catch (error) {
+		console.error(error);
+	}
+});
 
 // TODO: ROUTE 2 - Create a new app.get route for the form to create or update new custom object data. Send this data along in the next route.
 
@@ -28,22 +44,21 @@ app.get("/update-cobj", async (req, res) => {
 
 // * Code for Route 3 goes here
 app.post("/update-cobj", async (req, res) => {
-	const update = {
+	const newDude = {
 		properties: {
 			jersey_number: req.body.jersey_number,
 			position: req.body.position,
 			name: req.body.name,
 		},
 	};
-	const objectId = req.body.objectId;
-	const updatePlayer = `https://api.hubspot.com/crm/v3/objects/2-38362414/${objectId}`;
+	const newPlayer = `https://api.hubspot.com/crm/v3/objects/minnesota_wild_players/batch/create`;
 	const headers = {
 		Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
 		"Content-Type": "application/json",
 	};
 
 	try {
-		await axios.patch(updatePlayer, update, { headers });
+		await axios.patch(newPlayer, newDude, { headers });
 		res.redirect("back");
 	} catch (err) {
 		console.error(err);
