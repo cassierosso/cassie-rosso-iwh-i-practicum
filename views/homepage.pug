@@ -13,14 +13,12 @@ html
       table
         thead
           tr
-            th ID
             th Name
             th Jersey Number
             th Position
         tbody
           each player in data
             tr
-              td= player.id
               td= player.properties.name
               td= player.properties.jersey_number
               td= player.properties.position
