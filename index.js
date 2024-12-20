@@ -32,7 +32,6 @@ app.get("/", async (req, res) => {
 			title: "Custom Object Table",
 			data: response.data.results,
 		});
-		console.log(response.data.results);
 	} catch (error) {
 		console.error(error);
 	}
