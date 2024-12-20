@@ -1,0 +1,17 @@
+doctype html
+html 
+    head 
+        title= title
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        link(rel="stylesheet", href="/css/style.css")
+    body    
+        h1= title
+        a(href="/") Return to the homepage
+        form(action="/update-cobj" method = "POST")
+            label(for="Name") Name
+            input(type = "text" id = "name" name = "name" required)
+            label(for="Position") Position
+            input(type="text" id = "position" name = "position" required)
+            label(for="Position") Jersey Number
+            input(type="number" id = "number" name = "number" required)
+            button(type="submit") Submit
