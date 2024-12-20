@@ -53,7 +53,7 @@ app.get("/update-cobj", async (req, res) => {
 app.post("/update-cobj", async (req, res) => {
 	const newDude = {
 		properties: {
-			jersey_number: req.body.jersey_number,
+			jersey_number: req.body.number,
 			position: req.body.position,
 			name: req.body.name,
 		},
@@ -66,7 +66,7 @@ app.post("/update-cobj", async (req, res) => {
 
 	try {
 		await axios.post(newPlayer, { inputs: [newDude] }, { headers });
-		res.location(req.get("Referrer") || "/");
+		res.redirect("/");
 	} catch (err) {
 		console.error("Error creating custom object:", err);
 	}
